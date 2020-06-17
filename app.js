@@ -42,43 +42,7 @@ const ToDoItem = mongoose.model ( "ToDoItem", toDoListSchema );
 
 const app = express ();
 
-// Default Todo items
-const buyFood = new ToDoItem ( {
-    todoItem: "Buy Food"
-} );
-const cookFood = new ToDoItem ( {
-    todoItem: "Cook Food"
-} );
-const eatFood = new ToDoItem ( {
-    todoItem: "Eat Food"
-} );
-
-const defaultItems = [buyFood, cookFood, eatFood];
-
-// set up database with defaults if not already set up
-ToDoItem.find ( function (err, todoItems) {
-    if (err) {
-        console.log ( err );
-    } else {
-        console.log ( todoItems );
-        todoItems.forEach ( (item, index) => {
-            if(defaultItems.some ( (defaultItem) => {
-                return (item.todoItem === defaultItem.todoItem);
-            } )){
-
-            }
-            else {
-                todoItems
-            }
-        } );
-    }
-    // mongoose.connection.close ();
-    // process.exit ();
-} );
-
-
-// const todoItems = ["Buy Food", "Cook Food", "Eat Food"];
-// const workItems = [];
+setupDatabaseWithDefaults ();
 
 app.set ( 'view engine', 'ejs' );
 app.use ( bodyParser.urlencoded ( {extended: true} ) );
@@ -102,11 +66,25 @@ app.get ( "/", function (req, res) {
 } );
 
 app.get ( "/work", function (req, res) {
-    res.render ( "list", {listTitle: "Work List", newItem: workItems} );
+    ToDoItem.where("todoType").equals("work").exec((err, workItems) =>{
+        if(err){
+            console.log ("received error in work mongoose query: " + err);
+        }
+        else{
+            res.render ( "list", {listTitle: "Work List", newItem: workItems} );
+        }
+    });
 } );
 
 app.post ( "/work", function (req, res) {
-    workItems.push ( req.body.newItem );
+    const newWorkItem = new ToDoItem ( {
+        todoItem: req.body.newItem,
+        todoType: "work"
+    } );
+    newWorkItem.save ( (err) => {
+        console.log ( "error in work item save: " + err );
+        console.log ( "item error: " + newWorkItem );
+    } );
     res.redirect ( "/work" );
 } );
 
@@ -117,3 +95,57 @@ app.get ( "/about", function (req, res) {
 app.listen ( port, function () {
     console.log ( "server started on port: " + port );
 } );
+
+/////////////////////////////////////////////////////////////////
+// Helper Methods
+/////////////////////////////////////////////////////////////////
+
+function setupDatabaseWithDefaults () {
+// Default Todo items
+    const buyFood = new ToDoItem ( {
+        todoItem: "Buy Food"
+    } );
+    const cookFood = new ToDoItem ( {
+        todoItem: "Cook Food"
+    } );
+    const eatFood = new ToDoItem ( {
+        todoItem: "Eat Food"
+    } );
+
+    const defaultItems = [buyFood, cookFood, eatFood];
+
+// set up database with defaults if not already set up
+    ToDoItem.find ( function (err, todoItems) {
+        if (err) {
+            console.log ( "got error in find: " + err );
+        } else {
+            // console.log ( "current items in db: " + todoItems );
+            defaultItems.forEach ( (item, index) => {
+                if (todoItems.some ( (todoItem) => {
+                    return (
+                        item.todoItem === todoItem.todoItem
+                    );
+                } )) {
+                    // console.log ("already in db: " + item);
+                } else {
+                    item.save ( err => {
+                        console.log ( "got error in item save: " + err );
+                    } );
+                    // console.log ("successfully saved item: " + item);
+                }
+            } );
+        }
+    } );
+// ToDoItem.find((err, items) => {
+//    if(err){
+//        console.log ("got error in second find: " + err);
+//    }
+//    else{
+//        console.log ("all items in db after defaults: " + items);
+//    }
+//     // mongoose.connection.close ();
+//     // process.exit ();
+// });
+// const todoItems = ["Buy Food", "Cook Food", "Eat Food"];
+// const workItems = [];
+}
