@@ -50,10 +50,23 @@ app.use ( express.static ( "public" ) );
 
 app.post ( "/", function (req, res) {
     if (req.body.list === "Work") {
-        workItems.push ( req.body.newItem );
+        const newItem = new ToDoItem ( {
+            todoItem: req.body.newItem,
+            todoType: "work"
+        } );
+        newItem.save ( (err) => {
+            console.log ( "error in work item save: " + err );
+            console.log ( "item error: " + newItem );
+        } );
         res.redirect ( "/work" );
     } else {
-        todoItems.push ( req.body.newItem );
+        const newItem = new ToDoItem ( {
+            todoItem: req.body.newItem,
+        } );
+        newItem.save ( (err) => {
+            console.log ( "error in work item save: " + err );
+            console.log ( "item error: " + newItem );
+        } );
         res.redirect ( "/" );
     }
 } );
@@ -61,19 +74,23 @@ app.post ( "/", function (req, res) {
 app.get ( "/", function (req, res) {
 
     const day = date.getDate ();
-
-    res.render ( "list", {listTitle: day, newItem: todoItems} );
+    ToDoItem.find ( (err, items) => {
+        if (err) {
+            console.log ( "error in get /, find: " + err );
+        } else {
+            res.render ( "list", {listTitle: day, newItem: items} );
+        }
+    } );
 } );
 
 app.get ( "/work", function (req, res) {
-    ToDoItem.where("todoType").equals("work").exec((err, workItems) =>{
-        if(err){
-            console.log ("received error in work mongoose query: " + err);
-        }
-        else{
+    ToDoItem.where ( "todoType" ).equals ( "work" ).exec ( (err, workItems) => {
+        if (err) {
+            console.log ( "received error in work mongoose query: " + err );
+        } else {
             res.render ( "list", {listTitle: "Work List", newItem: workItems} );
         }
-    });
+    } );
 } );
 
 app.post ( "/work", function (req, res) {
