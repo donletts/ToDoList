@@ -74,7 +74,7 @@ app.post ( "/", function (req, res) {
 app.get ( "/", function (req, res) {
 
     const day = date.getDate ();
-    ToDoItem.find ( (err, items) => {
+    ToDoItem.where ( "todoType" ).equals ( "home" ).exec ( (err, items) => {
         if (err) {
             console.log ( "error in get /, find: " + err );
         } else {
