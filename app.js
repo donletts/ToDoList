@@ -74,11 +74,11 @@ app.post ( "/", function (req, res) {
 app.get ( "/", function (req, res) {
 
     const day = date.getDate ();
-    ToDoItem.where ( "todoType" ).equals ( "home" ).exec ( (err, items) => {
+    ToDoItem.where ( "todoType" ).equals ( "home" ).exec ( (err, homeItems) => {
         if (err) {
             console.log ( "error in get /, find: " + err );
         } else {
-            res.render ( "list", {listTitle: day, newItem: items} );
+            res.render ( "list", {listTitle: "Home List", newItem: homeItems} );
         }
     } );
 } );

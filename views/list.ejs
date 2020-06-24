@@ -1,17 +1,23 @@
 <%- include('header'); -%>
-    <div class="box" id="heading">
-        <h1> <%= listTitle %> </h1>
-    </div>
-    <div class="box">
-        <% for(var i = 0; i < newItem.length; i++) { %>
+<div class="box" id="heading">
+    <h1> <%= listTitle %> </h1>
+</div>
+<div class="box">
+    <% for(var i = 0; i < newItem.length; ) { %>
+        <div class="box" id="heading">
+            <h1> <%= newItem[i].date.toDateString() %> </h1>
+        </div>
+        <% for(var j = i; j < newItem.length; j++) { %>
+            <% if(newItem[j].date.toDateString() != newItem[i].date.toDateString() ) { i = j; break; } %>
             <div class="item">
-                <input type="checkbox" <%- newItem[i].isDone?"checked":"" %> >
-                <p> <%= newItem[i].todoItem %> </p>
+                <input type="checkbox" <%- newItem[j].isDone ? "checked" : "" %> >
+                <p> <%= newItem[j].todoItem %> </p>
             </div>
         <% } %>
-        <form class="item" action="/" method="post">
-            <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
-            <button type="submit" name="list" value=<%= listTitle %>>+</button>
-        </form>
-    </div>
+    <% } %>
+    <form class="item" action="/" method="post">
+        <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
+        <button type="submit" name="list" value=<%= listTitle %>>+</button>
+    </form>
+</div>
 <%- include('footer'); -%>
