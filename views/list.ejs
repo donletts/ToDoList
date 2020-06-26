@@ -7,17 +7,18 @@
         <div class="box" id="heading">
             <h1> <%= newItem[i].date.toDateString() %> </h1>
         </div>
-        <% for(var j = i; j < newItem.length; j++) { %>
+        <% for(var j = i; j < newItem.length; j++, i++) { %>
             <% if(newItem[j].date.toDateString() != newItem[i].date.toDateString() ) { i = j; break; } %>
             <div class="item">
                 <input type="checkbox" <%- newItem[j].isDone ? "checked" : "" %> >
                 <p> <%= newItem[j].todoItem %> </p>
+                <button class="delete" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash" ></i></button>
             </div>
         <% } %>
     <% } %>
     <form class="item" action="/" method="post">
         <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
-        <button type="submit" name="list" value=<%= listTitle %>>+</button>
+        <button type="submit" name="list" value=<%= newItem[0].todoType %>>+</button>
     </form>
 </div>
 <%- include('footer'); -%>

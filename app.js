@@ -49,26 +49,16 @@ app.use ( bodyParser.urlencoded ( {extended: true} ) );
 app.use ( express.static ( "public" ) );
 
 app.post ( "/", function (req, res) {
-    if (req.body.list === "Work") {
-        const newItem = new ToDoItem ( {
-            todoItem: req.body.newItem,
-            todoType: "work"
-        } );
-        newItem.save ( (err) => {
+    const newItem = new ToDoItem ( {
+        todoItem: req.body.newItem,
+    } );
+    newItem.save ( (err) => {
+        if (err) {
             console.log ( "error in work item save: " + err );
             console.log ( "item error: " + newItem );
-        } );
-        res.redirect ( "/work" );
-    } else {
-        const newItem = new ToDoItem ( {
-            todoItem: req.body.newItem,
-        } );
-        newItem.save ( (err) => {
-            console.log ( "error in work item save: " + err );
-            console.log ( "item error: " + newItem );
-        } );
-        res.redirect ( "/" );
-    }
+        }
+    } );
+    res.redirect ( "/" );
 } );
 
 app.get ( "/", function (req, res) {
@@ -99,8 +89,10 @@ app.post ( "/work", function (req, res) {
         todoType: "work"
     } );
     newWorkItem.save ( (err) => {
-        console.log ( "error in work item save: " + err );
-        console.log ( "item error: " + newWorkItem );
+        if (err) {
+            console.log ( "error in work item save: " + err );
+            console.log ( "item error: " + newWorkItem );
+        }
     } );
     res.redirect ( "/work" );
 } );
@@ -146,7 +138,9 @@ function setupDatabaseWithDefaults () {
                     // console.log ("already in db: " + item);
                 } else {
                     item.save ( err => {
-                        console.log ( "got error in item save: " + err );
+                        if (err) {
+                            console.log ( "got error in item save: " + err );
+                        }
                     } );
                     // console.log ("successfully saved item: " + item);
                 }
