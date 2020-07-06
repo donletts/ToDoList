@@ -12,7 +12,10 @@
             <div class="item">
                 <input type="checkbox" <%- newItem[j].isDone ? "checked" : "" %> >
                 <p> <%= newItem[j].todoItem %> </p>
-                <button class="delete" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash" ></i></button>
+                <form class="delete" action="/" method="post">
+                    <button type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                class="fa fa-trash"></i></button>
+                </form>
             </div>
         <% } %>
     <% } %>
