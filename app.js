@@ -49,15 +49,20 @@ app.use ( bodyParser.urlencoded ( {extended: true} ) );
 app.use ( express.static ( "public" ) );
 
 app.post ( "/", function (req, res) {
-    const newItem = new ToDoItem ( {
-        todoItem: req.body.newItem,
-    } );
-    newItem.save ( (err) => {
-        if (err) {
-            console.log ( "error in item save: " + err );
-            console.log ( "item error: " + newItem );
-        }
-    } );
+    if(req.body.delete){
+
+    }
+    else {
+        const newItem = new ToDoItem ( {
+            todoItem: req.body.newItem,
+        } );
+        newItem.save ( (err) => {
+            if (err) {
+                console.log ( "error in item save: " + err );
+                console.log ( "item error: " + newItem );
+            }
+        } );
+    }
     res.redirect ( "/" );
 } );
 
@@ -84,16 +89,21 @@ app.get ( "/work", function (req, res) {
 } );
 
 app.post ( "/work", function (req, res) {
-    const newWorkItem = new ToDoItem ( {
-        todoItem: req.body.newItem,
-        todoType: "work"
-    } );
-    newWorkItem.save ( (err) => {
-        if (err) {
-            console.log ( "error in work item save: " + err );
-            console.log ( "item error: " + newWorkItem );
-        }
-    } );
+    if(req.body.delete){
+
+    }
+    else{
+        const newWorkItem = new ToDoItem ( {
+            todoItem: req.body.newItem,
+            todoType: "work"
+        } );
+        newWorkItem.save ( (err) => {
+            if (err) {
+                console.log ( "error in work item save: " + err );
+                console.log ( "item error: " + newWorkItem );
+            }
+        } );
+    }
     res.redirect ( "/work" );
 } );
 

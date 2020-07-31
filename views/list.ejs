@@ -16,8 +16,9 @@
             <input type="checkbox" <%- newItem[i].isDone ? "checked" : "" %> >
             <p> <%= newItem[i].todoItem %> </p>
             <p> <%= newItem[i].date.toDateString () %> </p>
-                <button type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i
-                            class="fa fa-trash"></i></button>
+            <button type="submit" name="delete" value=<%= newItem[i].id %> data-toggle="tooltip"
+                    data-placement="top" title="Delete"><i
+                        class="fa fa-trash"></i></button>
         </form>
     <% } %>
     <form class="item" action="/<%= newItem[0].todoType %>" method="post">
