@@ -12,7 +12,7 @@
             </div>
             <% previousDate = currentDate %>
         <% } %>
-        <form class="item delete" action="/" method="post">
+        <form class="item delete" action="/<%= newItem[0].todoType %>" method="post">
             <input type="checkbox" <%- newItem[i].isDone ? "checked" : "" %> >
             <p> <%= newItem[i].todoItem %> </p>
             <p> <%= newItem[i].date.toDateString () %> </p>
@@ -20,7 +20,7 @@
                             class="fa fa-trash"></i></button>
         </form>
     <% } %>
-    <form class="item" action="/" method="post">
+    <form class="item" action="/<%= newItem[0].todoType %>" method="post">
         <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
         <button type="submit" name="list" value=<%= newItem[0].todoType %>>+</button>
     </form>

@@ -54,7 +54,7 @@ app.post ( "/", function (req, res) {
     } );
     newItem.save ( (err) => {
         if (err) {
-            console.log ( "error in work item save: " + err );
+            console.log ( "error in item save: " + err );
             console.log ( "item error: " + newItem );
         }
     } );
