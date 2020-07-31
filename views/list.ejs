@@ -3,21 +3,22 @@
     <h1> <%= listTitle %> </h1>
 </div>
 <div class="box">
-    <% for(var i = 0; i < newItem.length; ) { %>
-        <div class="box" id="heading">
-            <h1> <%= newItem[i].date.toDateString() %> </h1>
-        </div>
-        <% for(var j = i; j < newItem.length; j++, i++) { %>
-            <% if(newItem[j].date.toDateString() != newItem[i].date.toDateString() ) { i = j; break; } %>
-            <div class="item">
-                <input type="checkbox" <%- newItem[j].isDone ? "checked" : "" %> >
-                <p> <%= newItem[j].todoItem %> </p>
-                <form class="delete" action="/" method="post">
-                    <button type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i
-                                class="fa fa-trash"></i></button>
-                </form>
+    <% previousDate = new Date ().toDateString () %>
+    <% for(var i = 0; i < newItem.length; i++) { %>
+        <% currentDate = newItem[i].date.toDateString () %>
+        <% if(previousDate !== currentDate) { %>
+            <div class="box" id="heading">
+                <h1> <%= newItem[i].date.toDateString () %> </h1>
             </div>
+            <% previousDate = currentDate %>
         <% } %>
+        <form class="item delete" action="/" method="post">
+            <input type="checkbox" <%- newItem[i].isDone ? "checked" : "" %> >
+            <p> <%= newItem[i].todoItem %> </p>
+            <p> <%= newItem[i].date.toDateString () %> </p>
+                <button type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i
+                            class="fa fa-trash"></i></button>
+        </form>
     <% } %>
     <form class="item" action="/" method="post">
         <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
