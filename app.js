@@ -56,27 +56,36 @@ app.get("/home", function(req, res){
     res.redirect("/");
 })
 
+function DeleteItem (objectId) {
+    ToDoItem.deleteOne ( {_id: objectId},
+        function (err) {
+            if (err) {
+                console.log ( err ); // Failure
+            } else {
+                console.log ( objectId + " deleted" ); // Success
+            }
+        }
+    );
+}
+
+function SaveItem ( newItem, itemType ) {
+    const newItemObject = new ToDoItem ( {
+        todoItem: newItem,
+        todoType: itemType
+    } );
+    newItemObject.save ( (err) => {
+        if (err) {
+            console.log ( "error in " + itemType + " item save: " + err );
+            console.log ( "item error: " + newItemObject );
+        }
+    } );
+}
+
 app.post ( "/", function (req, res) {
     if (req.body.delete) {
-        ToDoItem.deleteOne ( {_id: req.body.delete},
-            function (err) {
-                if (err) {
-                    console.log ( err ); // Failure
-                } else {
-                    console.log ( req.body.delete + " deleted" ); // Success
-                }
-            }
-        );
+        DeleteItem ( req.body.delete );
     } else {
-        const newItem = new ToDoItem ( {
-            todoItem: req.body.newItem,
-        } );
-        newItem.save ( (err) => {
-            if (err) {
-                console.log ( "error in item save: " + err );
-                console.log ( "item error: " + newItem );
-            }
-        } );
+        SaveItem ( req.body.newItem, "work" );
     }
     res.redirect ( "/" );
 } );
@@ -105,26 +114,9 @@ app.get ( "/work", function (req, res) {
 
 app.post ( "/work", function (req, res) {
     if (req.body.delete) {
-        ToDoItem.deleteOne ( {_id: req.body.delete},
-            function (err) {
-                if (err) {
-                    console.log ( err ); // Failure
-                } else {
-                    console.log ( req.body.delete + " deleted" ); // Success
-                }
-            }
-        );
+        DeleteItem ( req.body.delete );
     } else {
-        const newWorkItem = new ToDoItem ( {
-            todoItem: req.body.newItem,
-            todoType: "work"
-        } );
-        newWorkItem.save ( (err) => {
-            if (err) {
-                console.log ( "error in work item save: " + err );
-                console.log ( "item error: " + newWorkItem );
-            }
-        } );
+        SaveItem ( req.body.newItem, "work" );
     }
     res.redirect ( "/work" );
 } );
