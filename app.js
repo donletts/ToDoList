@@ -48,11 +48,26 @@ app.set ( 'view engine', 'ejs' );
 app.use ( bodyParser.urlencoded ( {extended: true} ) );
 app.use ( express.static ( "public" ) );
 
-app.post ( "/", function (req, res) {
-    if(req.body.delete){
+app.post ("/home", function(req, res){
+   res.redirect(307, "/");
+});
 
-    }
-    else {
+app.get("/home", function(req, res){
+    res.redirect("/");
+})
+
+app.post ( "/", function (req, res) {
+    if (req.body.delete) {
+        ToDoItem.deleteOne ( {_id: req.body.delete},
+            function (err) {
+                if (err) {
+                    console.log ( err ); // Failure
+                } else {
+                    console.log ( req.body.delete + " deleted" ); // Success
+                }
+            }
+        );
+    } else {
         const newItem = new ToDoItem ( {
             todoItem: req.body.newItem,
         } );
@@ -89,10 +104,17 @@ app.get ( "/work", function (req, res) {
 } );
 
 app.post ( "/work", function (req, res) {
-    if(req.body.delete){
-
-    }
-    else{
+    if (req.body.delete) {
+        ToDoItem.deleteOne ( {_id: req.body.delete},
+            function (err) {
+                if (err) {
+                    console.log ( err ); // Failure
+                } else {
+                    console.log ( req.body.delete + " deleted" ); // Success
+                }
+            }
+        );
+    } else {
         const newWorkItem = new ToDoItem ( {
             todoItem: req.body.newItem,
             todoType: "work"
