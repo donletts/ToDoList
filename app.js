@@ -135,17 +135,17 @@ app.listen ( port, function () {
 
 function setupDatabaseWithDefaults () {
 // Default Todo items
-    const buyFood = new ToDoItem ( {
-        todoItem: "Buy Food"
+    const welcome = new ToDoItem ( {
+        todoItem: "Welcome to your todolist!"
     } );
-    const cookFood = new ToDoItem ( {
-        todoItem: "Cook Food"
+    const addItem = new ToDoItem ( {
+        todoItem: "Hit the + button to add a new item"
     } );
-    const eatFood = new ToDoItem ( {
-        todoItem: "Eat Food"
+    const deleteItem = new ToDoItem ( {
+        todoItem: "<-- Hit this to delete an item."
     } );
 
-    const defaultItems = [buyFood, cookFood, eatFood];
+    const defaultItems = [welcome, addItem, deleteItem];
 
 // set up database with defaults if not already set up
     ToDoItem.find ( function (err, todoItems) {
