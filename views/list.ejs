@@ -4,26 +4,26 @@
 </div>
 <div class="box">
     <% previousDate = new Date ().toDateString () %>
-    <% for(var i = 0; i < newItem.length; i++) { %>
-        <% currentDate = newItem[i].date.toDateString () %>
+    <% newItems.forEach(function(newItem) { %>
+        <% currentDate = newItem.date.toDateString () %>
         <% if(previousDate !== currentDate) { %>
             <div class="box" id="heading">
-                <h1> <%= newItem[i].date.toDateString () %> </h1>
+                <h1> <%= newItem.date.toDateString () %> </h1>
             </div>
             <% previousDate = currentDate %>
         <% } %>
-        <form class="item delete" action="/<%= newItem[0].todoType %>" method="post">
-            <input type="checkbox" <%- newItem[i].isDone ? "checked" : "" %> >
-            <p> <%= newItem[i].todoItem %> </p>
-            <p> <%= newItem[i].date.toDateString () %> </p>
-            <button type="submit" name="delete" value=<%= newItem[i].id %> data-toggle="tooltip"
+        <form class="item delete" action="/<%= newItem.todoType %>" method="post">
+            <input type="checkbox" <%- newItem.isDone ? "checked" : "" %> >
+            <p> <%= newItem.todoItem %> </p>
+            <p> <%= newItem.date.toDateString () %> </p>
+            <button type="submit" name="delete" value=<%= newItem.id %> data-toggle="tooltip"
                     data-placement="top" title="Delete"><i
                         class="fa fa-trash"></i></button>
         </form>
-    <% } %>
-    <form class="item" action="/<%= newItem[0].todoType %>" method="post">
-        <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
-        <button type="submit" name="list" value=<%= newItem[0].todoType %>>+</button>
+    <% }) %>
+    <form class="item" action="/<%= newItems[0].todoType %>" method="post">
+        <input type="text" name="addedItem" placeholder="New Item" autocomplete="off">
+        <button type="submit" name="list" value=<%= newItems[0].todoType %>>+</button>
     </form>
 </div>
 <%- include('footer'); -%>

@@ -85,7 +85,7 @@ app.post ( "/", function (req, res) {
     if (req.body.delete) {
         DeleteItem ( req.body.delete );
     } else {
-        SaveItem ( req.body.newItem, "work" );
+        SaveItem ( req.body.addedItem, "home" );
     }
     res.redirect ( "/" );
 } );
@@ -97,7 +97,7 @@ app.get ( "/", function (req, res) {
         if (err) {
             console.log ( "error in get /, find: " + err );
         } else {
-            res.render ( "list", {listTitle: "Home List", newItem: homeItems} );
+            res.render ( "list", {listTitle: "Home List", newItems: homeItems} );
         }
     } );
 } );
@@ -107,7 +107,7 @@ app.get ( "/work", function (req, res) {
         if (err) {
             console.log ( "received error in work mongoose query: " + err );
         } else {
-            res.render ( "list", {listTitle: "Work List", newItem: workItems} );
+            res.render ( "list", {listTitle: "Work List", newItems: workItems} );
         }
     } );
 } );
@@ -116,7 +116,7 @@ app.post ( "/work", function (req, res) {
     if (req.body.delete) {
         DeleteItem ( req.body.delete );
     } else {
-        SaveItem ( req.body.newItem, "work" );
+        SaveItem ( req.body.addedItem, "work" );
     }
     res.redirect ( "/work" );
 } );
